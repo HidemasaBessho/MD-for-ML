@@ -19,7 +19,7 @@ int output(double *s2,double *c2){
   ofstream File;
   File.open(filename);
 
-  File <<"#"<<" "<< "q"<<" "<<"sq"<< endl; 
+  //File <<"#"<<" "<< "q"<<" "<<"sq"<< endl; 
   for(i=1;i<100;i++)
     File << double(i)*2.*pi/L << " " << s2[i]+c2[i]<< endl; 
   File.close(); 
@@ -36,12 +36,12 @@ int sq(double *x,double *y,double *c2,double *s2,double ens){
       si=0.0;      
       for(i=0;i<Np;i++){
 	///(0.5*pi*int(sqrt(nx*nx+ny*ny)))/Np/ens
-	co+=cos(2.*pi*(nx*x[i]+ny*y[i])/L);
-	si+=sin(2.*pi*(nx*x[i]+ny*y[i])/L);
+	co+=cos(2.*pi*(nx*x[i]+ny*y[i])/L); //sum cos(q*rj)
+	si+=sin(2.*pi*(nx*x[i]+ny*y[i])/L); //sum sin(q*rj)
       }  
       if(nx*nx+ny*ny!=0){
-	c2[int(sqrt(nx*nx+ny*ny))]+=co*co/(0.5*pi*int(sqrt(nx*nx+ny*ny)))/Np/ens;
-	s2[int(sqrt(nx*nx+ny*ny))]+=si*si/(0.5*pi*int(sqrt(nx*nx+ny*ny)))/Np/ens;
+	c2[int(sqrt(nx*nx+ny*ny))]+=co*co/(0.5*pi*int(sqrt(nx*nx+ny*ny)))/Np/ens; // c2 is cos^2/circle/N/ensemble  ens : the number of ensemble
+	s2[int(sqrt(nx*nx+ny*ny))]+=si*si/(0.5*pi*int(sqrt(nx*nx+ny*ny)))/Np/ens; // s2 is sin^2/circle/N/ensemble
       }
     }
   return 0;
@@ -62,10 +62,10 @@ int main(){
   ifstream file;
   
   for(i=1;i<ens;i++){
-    sprintf(filename,"bina2d_%d_T1.0.dat",i*100);
+    sprintf(filename,"bina2d_%d_T1.0.dat",i*100); // coordination of paricles
     file.open(filename);   
     for(j=0;j<Np;j++){
-      file >> x[j] >> y[j] >> dummy; 
+      file >> x[j] >> y[j] >> dummy;
       //      cout << x[j]<<endl;
     }
     file.close();
